@@ -3,11 +3,11 @@
 namespace TNB {
     string ReadFile(string fileName) {
         string out;
-        string line;
         ifstream f (fileName);
         if (! f.good()) exit(-1);
-        while (getline(f, line)) out += line;
+        while (f) out += f.get();
         f.close();
+        out.pop_back();
         return FromBytes(out);
     }
     string FromBytes(string data) {
