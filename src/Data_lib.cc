@@ -79,7 +79,7 @@ namespace TNB {
     Token Lexer::AdvanceWithToken(Token token) { Advance(); return token; }
     Token Lexer::GetString() { Token out = Token(Token::TOKEN_STRING, ""); Advance(); while (c != '"') { out.val += c; Advance(); } Advance(); return out; }
     Token Lexer::GetNumber() { Token out = Token(Token::TOKEN_NUMBER, ""); while (isdigit(c)) { out.val += c; Advance(); } return out; }
-    Token Lexer::GetID() { Token out = Token(Token::TOKEN_ID, ""); while (isalnum(c)) { out.val += c; Advance(); } return out; }
+    Token Lexer::GetID() { Token out = Token(Token::TOKEN_ID, ""); while (isalnum(c) || c == '_') { out.val += c; Advance(); } return out; }
     Token Lexer::NextToken() { 
         while (pos < (int)length) {
             if (c == ' ' || c == '\n' || c == '\t') SkipWhitespace();
@@ -91,7 +91,7 @@ namespace TNB {
             if (c == ']') return AdvanceWithToken(Token(Token::TOKEN_END_ARRAY, "]"));
             if (c == '"') return GetString();
             if (isdigit(c)) return GetNumber();
-            if (isalnum(c)) return GetID();
+            if (isalnum(c) || c == '_') return GetID();
         }
         return Token(Token::TOKEN_EOF, "\0");
     }
